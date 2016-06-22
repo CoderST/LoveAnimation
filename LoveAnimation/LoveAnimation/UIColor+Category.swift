@@ -1,9 +1,9 @@
 //
-//  UIColor+Category.swift
-//  DSWeibo
+//  AppDelegate.swift
+//  LoveAnimation
 //
-//  Created by xiaomage on 15/9/14.
-//  Copyright © 2015年 小码哥. All rights reserved.
+//  Created by xiudou on 16/6/21.
+//  Copyright © 2016年 xiudo. All rights reserved.
 //
 
 import UIKit
