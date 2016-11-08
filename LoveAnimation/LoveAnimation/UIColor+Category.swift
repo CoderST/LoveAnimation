@@ -8,8 +8,8 @@
 
 import UIKit
 
-extension UIColor
-{
+extension UIColor {
+    
     class func randomColor() -> UIColor {
         return UIColor(red: randomNumber(), green: randomNumber(), blue: randomNumber() , alpha: 1.0)
     }

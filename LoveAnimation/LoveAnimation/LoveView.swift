@@ -9,9 +9,11 @@
 import UIKit
 
 class LoveView: UIView {
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor.clearColor()
+        
+        backgroundColor = UIColor.clear
         layer.anchorPoint = CGPoint(x: 0.5, y: 1)
     }
     
@@ -19,45 +21,44 @@ class LoveView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        
         drawLoveIn(rect)
     }
     
-    private func drawLoveIn(rect:CGRect){
+    private func drawLoveIn(_ rect:CGRect) {
+        
         /**
         *  设置填充颜色
         */
-        UIColor.whiteColor().setStroke()
+        UIColor.white.setStroke()
         UIColor.randomColor().setFill()
-        
         
         /**
          *  爱心间隙
          */
-        let drawingPadding:CGFloat = 4.0
+        let drawingPadding: CGFloat = 4.0
         
         /**
          *  一侧圆的半径
          *  @param rect
          *  @return 一侧圆的半径
          */
-        let curveRadius = floor((CGRectGetWidth(rect) - 2*drawingPadding) / 4.0)
-        
+        let curveRadius = floor((rect.width - 2 * drawingPadding) / 4.0)
         
         /**
          *  创建曲线
          */
         let heartPath = UIBezierPath()
         
-        
         /**
          *  底部的小尖尖
          *  @param rect 底部尖尖的 X和Y
          *  @return 底部的小尖尖
          */
-        let tipLocation = CGPointMake(floor(CGRectGetWidth(rect) / 2.0), CGRectGetHeight(rect) - drawingPadding)
-        heartPath.moveToPoint(tipLocation)
-        
+        let tipLocation = CGPoint(x: floor(rect.width / 2.0), y: rect.height - drawingPadding)
+        heartPath.move(to: tipLocation)
         
         /**
          *  左侧半圆起始点
@@ -65,8 +66,7 @@ class LoveView: UIView {
          *  @param rect           起始点Y
          *  @return 左侧圆起始点
          */
-        let topLeftCurveStart = CGPointMake(drawingPadding, floor(CGRectGetHeight(rect) / 2.4))
-        
+        let topLeftCurveStart = CGPoint(x: drawingPadding, y: floor(rect.height / 2.4))
         
         /**
         *  添加底部尖尖到左侧圆起始点曲线
@@ -75,8 +75,7 @@ class LoveView: UIView {
         *  @param topLeftCurveStart.y + curveRadius         控制点Y
         *  @return 添加底部尖尖到左侧圆起始点曲线
         */
-        heartPath.addQuadCurveToPoint(topLeftCurveStart, controlPoint: CGPoint(x: topLeftCurveStart.x, y: topLeftCurveStart.y + curveRadius))
-        
+        heartPath.addQuadCurve(to: topLeftCurveStart, controlPoint: CGPoint(x: topLeftCurveStart.x, y: topLeftCurveStart.y + curveRadius))
         
         /**
         *  添加左侧半圆起始点到终点圆弧
@@ -88,10 +87,7 @@ class LoveView: UIView {
         *  @param clockwise                                 旋转方向
         *  @return 添加左侧圆起始点到终点圆弧
         */
-        heartPath.addArcWithCenter(CGPoint(x: topLeftCurveStart.x + curveRadius, y: topLeftCurveStart.y), radius: curveRadius, startAngle: CGFloat(M_PI), endAngle: 0, clockwise: true)
-        
-        
-        
+        heartPath.addArc(withCenter: CGPoint(x: topLeftCurveStart.x + curveRadius, y: topLeftCurveStart.y), radius: curveRadius, startAngle: CGFloat(M_PI), endAngle: 0, clockwise: true)
         
         /**
          *  右侧半圆弧起始点
@@ -99,11 +95,8 @@ class LoveView: UIView {
          *  @param topLeftCurveStart.y                 右侧圆起始点Y
          *  @return 右侧圆起始点
          */
-        let topRightCurveStart = CGPoint(x: topLeftCurveStart.x + 2*curveRadius, y: topLeftCurveStart.y)
-        
-        
-        
-        
+        let topRightCurveStart = CGPoint(x: topLeftCurveStart.x + 2 * curveRadius, y: topLeftCurveStart.y)
+
         /**
         *  添加右侧半圆起始点到终点圆弧
         *  @param topRightCurveStart.x + curveRadius          右侧圆心X
@@ -114,70 +107,73 @@ class LoveView: UIView {
         *  @param clockwise                                   旋转方向
         *  @return 添加右侧半圆起始点到终点圆弧
         */
-        heartPath.addArcWithCenter(CGPoint(x: topRightCurveStart.x + curveRadius, y: topRightCurveStart.y), radius: curveRadius, startAngle: CGFloat(M_PI), endAngle: 0, clockwise: true)
-        
-        
+        heartPath.addArc(withCenter: CGPoint(x: topRightCurveStart.x + curveRadius, y: topRightCurveStart.y), radius: curveRadius, startAngle: CGFloat(M_PI), endAngle: 0, clockwise: true)
+
         /**
          *  右侧半圆终点
          *  @param topLeftCurveStart.x + 4*curveRadius          右侧半圆的终点X
          *  @param topRightCurveStart.y                         右侧半圆的终点Y
          *  @return 右侧半圆终点
          */
-        let topRightCurveEnd = CGPoint(x: topLeftCurveStart.x + 4*curveRadius, y: topRightCurveStart.y)
-        
-        
+        let topRightCurveEnd = CGPoint(x: topLeftCurveStart.x + 4 * curveRadius, y: topRightCurveStart.y)
+
         /**
         *  右侧半圆终点到底部小尖尖曲线
         *  @param topRightCurveEnd.x                       控制点X
         *  @param topRightCurveEnd.y + curveRadius         控制点Y
         *  @return 右侧半圆终点到底部小尖尖
         */
-        heartPath.addQuadCurveToPoint(tipLocation, controlPoint: CGPoint(x: topRightCurveEnd.x, y: topRightCurveEnd.y + curveRadius))
-        
-        
+        heartPath.addQuadCurve(to: tipLocation, controlPoint: CGPoint(x: topRightCurveEnd.x, y: topRightCurveEnd.y + curveRadius))
+
         heartPath.fill()
-        heartPath.lineWidth = 1;
-        heartPath.lineCapStyle = CGLineCap.Round
-        heartPath.lineJoinStyle = CGLineJoin.Round
+        heartPath.lineWidth = 1
+        heartPath.lineCapStyle = CGLineCap.round
+        heartPath.lineJoinStyle = CGLineJoin.round
         heartPath.stroke()
     }
-    
-    
-    func showAnimationWith(view: UIView){
+
+    func showAnimationWith(_ view: UIView) {
+        
         /// 父类的高度
         let viewHeight = view.frame.height
+        
         /// 动画执行总时间
-        let totleAnimationDuration:NSTimeInterval = 6
+        let totleAnimationDuration:TimeInterval = 6
+        
         /// 爱心的宽
-        let loveWidth:CGFloat = CGRectGetWidth(bounds)
+        let loveWidth:CGFloat = bounds.width
+        
         /// 爱心缩放起始比例
-        transform = CGAffineTransformMakeScale(0, 0)
+        transform = CGAffineTransform(scaleX: 0, y: 0)
         alpha = 0.0
+        
         /**
         *  爱心在开始显示时的动画
         */
-        UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.6, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
-            self.transform = CGAffineTransformIdentity
+        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.6, options: UIViewAnimationOptions.curveEaseOut, animations: { () -> Void in
+            
+            self.transform = CGAffineTransform.identity
             self.alpha = 0.9
             }) { (_) -> Void in
-                
         }
+        
         /// 临时值 0 1
-        let tempNumber = (CGFloat)(arc4random_uniform(2));
+        let tempNumber = (CGFloat)(arc4random_uniform(2))
+        
         /// 旋转方向值 -1 1
         let rotationDirectionNumber = (1 - 2 * (tempNumber))
-        let rotationFraction = (CGFloat)(arc4random_uniform(10)); // 0 ~ 9
+        let rotationFraction = (CGFloat)(arc4random_uniform(10)) // 0 ~ 9
         
         /**
         *  在totleAnimationDuration时间内动画执行的角度
         */
         let temp = (CGFloat)(M_PI / (Double)(16 + rotationFraction * 0.2))
-        UIView.animateWithDuration(totleAnimationDuration) { () -> Void in
-            self.transform = CGAffineTransformMakeRotation(rotationDirectionNumber * temp)
-        }
+        UIView.animate(withDuration: totleAnimationDuration, animations: { () -> Void in
+            self.transform = CGAffineTransform(rotationAngle: rotationDirectionNumber * temp)
+        }) 
         
         let lovePath = UIBezierPath()
-        lovePath.moveToPoint(center)
+        lovePath.move(to: center)
         
         /**
          *  结束的顶部随机点
@@ -190,25 +186,27 @@ class LoveView: UIView {
         /**
          *  随机控制的点
          */
-        let randomControl = (CGFloat)(arc4random_uniform(2));
+        let randomControl = (CGFloat)(arc4random_uniform(2))
+        
         /// 方向值 -1 1
         let directionNumber = (1 - 2 * (randomControl))
+        
         // 控制点 X 和 Y
-        let xDelta = (CGFloat)(loveWidth / 2.0 + (CGFloat)(arc4random_uniform(UInt32( 2 * loveWidth)))) * directionNumber;
-        let yDelta = max(endarc4randomPoint.y ,max((CGFloat)(arc4random_uniform(UInt32( 8 * loveWidth))), loveWidth));
-        let controlPoint1 = CGPointMake(center.x + xDelta, viewHeight - yDelta);
-        let controlPoint2 = CGPointMake(center.x - 2 * xDelta, yDelta);
+        let xDelta = (CGFloat)(loveWidth / 2.0 + (CGFloat)(arc4random_uniform(UInt32( 2 * loveWidth)))) * directionNumber
+        let yDelta = max(endarc4randomPoint.y ,max((CGFloat)(arc4random_uniform(UInt32( 8 * loveWidth))), loveWidth))
+        let controlPoint1 = CGPoint(x: center.x + xDelta, y: viewHeight - yDelta)
+        let controlPoint2 = CGPoint(x: center.x - 2 * xDelta, y: yDelta)
         
         /**
         *  添加结束点和控制点画曲线
         */
-        lovePath.addCurveToPoint(endarc4randomPoint, controlPoint1: controlPoint1, controlPoint2: controlPoint2)
+        lovePath.addCurve(to: endarc4randomPoint, controlPoint1: controlPoint1, controlPoint2: controlPoint2)
         
         /**
          *  创建帧动画
          */
         let keyFrameAnimation = CAKeyframeAnimation(keyPath: "position")
-        keyFrameAnimation.path = lovePath.CGPath
+        keyFrameAnimation.path = lovePath.cgPath
         
         /**
         *  timingFunction：速度控制函数，控制动画运行的节奏
@@ -219,14 +217,12 @@ class LoveView: UIView {
         /**
         *  动画执行
         */
-        keyFrameAnimation.duration = totleAnimationDuration + (NSTimeInterval)(endarc4randomPoint.y/viewHeight);
-        layer.addAnimation(keyFrameAnimation, forKey: "positionOnPath")
-        UIView.animateWithDuration(totleAnimationDuration, animations: { () -> Void in
+        keyFrameAnimation.duration = totleAnimationDuration + (TimeInterval)(endarc4randomPoint.y/viewHeight)
+        layer.add(keyFrameAnimation, forKey: "positionOnPath")
+        UIView.animate(withDuration: totleAnimationDuration, animations: { () -> Void in
             self.alpha = 0.0
-            }) { (_) -> Void in
+            }, completion: { (_) -> Void in
                 self.removeFromSuperview()
-        }
-        
+        }) 
     }
-    
 }
